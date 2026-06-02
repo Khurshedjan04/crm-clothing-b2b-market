@@ -1,0 +1,9 @@
+node_modules
+.env
+.env.*
+.git
+.gitignore
+.github
+*.log
+README.md
+aws-setup.md
