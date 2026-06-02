@@ -3,8 +3,9 @@
   "networkMode": "awsvpc",
   "requiresCompatibilities": ["FARGATE"],
   "cpu": "512",
-  "memory": "1024",
+  "memory": "2048",
   "executionRoleArn": "arn:aws:iam::416069842338:role/ecsTaskExecutionRole",
+  "taskRoleArn":      "arn:aws:iam::416069842338:role/ecsTaskExecutionRole",
   "containerDefinitions": [
     {
       "name": "clothco-app",
@@ -35,16 +36,17 @@
         "options": {
           "awslogs-group":         "/ecs/clothco",
           "awslogs-region":        "eu-north-1",
-          "awslogs-stream-prefix": "ecs"
+          "awslogs-stream-prefix": "ecs",
+          "awslogs-create-group":  "true"
         }
       },
       "essential": true,
       "healthCheck": {
-        "command": ["CMD-SHELL", "wget -qO- http://localhost:3000/api/v1/health || exit 1"],
+        "command": ["CMD-SHELL", "curl -f http://localhost:3000/api/v1/health || exit 1"],
         "interval": 30,
-        "timeout": 5,
+        "timeout": 10,
         "retries": 3,
-        "startPeriod": 15
+        "startPeriod": 60
       }
     }
   ]
