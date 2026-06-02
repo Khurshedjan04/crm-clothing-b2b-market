@@ -4,11 +4,11 @@
   "requiresCompatibilities": ["FARGATE"],
   "cpu": "512",
   "memory": "1024",
-  "executionRoleArn": "arn:aws:iam::YOUR_ACCOUNT_ID:role/ecsTaskExecutionRole",
+  "executionRoleArn": "arn:aws:iam::416069842338:role/ecsTaskExecutionRole",
   "containerDefinitions": [
     {
       "name": "clothco-app",
-      "image": "YOUR_ACCOUNT_ID.dkr.ecr.eu-west-1.amazonaws.com/clothco:latest",
+      "image": "416069842338.dkr.ecr.eu-north-1.amazonaws.com/clothingcompany-api:latest",
       "portMappings": [
         {
           "containerPort": 3000,
@@ -23,18 +23,18 @@
       "secrets": [
         {
           "name": "MONGO_URI",
-          "valueFrom": "arn:aws:ssm:eu-west-1:YOUR_ACCOUNT_ID:parameter/clothco/MONGO_URI"
+          "valueFrom": "arn:aws:ssm:eu-north-1:416069842338:parameter/clothco/MONGO_URI"
         },
         {
           "name": "JWT_SECRET",
-          "valueFrom": "arn:aws:ssm:eu-west-1:YOUR_ACCOUNT_ID:parameter/clothco/JWT_SECRET"
+          "valueFrom": "arn:aws:ssm:eu-north-1:416069842338:parameter/clothco/JWT_SECRET"
         }
       ],
       "logConfiguration": {
         "logDriver": "awslogs",
         "options": {
           "awslogs-group":         "/ecs/clothco",
-          "awslogs-region":        "eu-west-1",
+          "awslogs-region":        "eu-north-1",
           "awslogs-stream-prefix": "ecs"
         }
       },

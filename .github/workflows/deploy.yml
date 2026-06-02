@@ -6,12 +6,12 @@ on:
     branches: [main]
 
 env:
-  AWS_REGION:       eu-west-1          # change to your region
-  ECR_REPOSITORY:   clothco            # ECR repo name you create in AWS
-  ECS_CLUSTER:      clothco-cluster    # ECS cluster name
-  ECS_SERVICE:      clothco-service    # ECS service name
-  CONTAINER_NAME:   clothco-app        # must match name in task definition
-  TASK_FAMILY:      clothco-task       # ECS task definition family name
+  AWS_REGION:       eu-north-1
+  ECR_REPOSITORY:   clothingcompany-api
+  ECS_CLUSTER:      clothco-cluster
+  ECS_SERVICE:      clothco-service
+  CONTAINER_NAME:   clothco-app
+  TASK_FAMILY:      clothco-task
 
 jobs:
   # ── Job 1: Run basic checks ─────────────────────────────
