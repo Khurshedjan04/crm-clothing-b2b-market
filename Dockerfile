@@ -8,8 +8,9 @@ RUN npm ci --only=production
 FROM node:20-alpine AS runner
 WORKDIR /app
 
-# Non-root user for security
-RUN addgroup -S clothco && adduser -S clothco -G clothco
+# Install curl (needed for health checks) and create non-root user
+RUN apk add --no-cache curl && \
+    addgroup -S clothco && adduser -S clothco -G clothco
 
 # Copy only what the server needs
 COPY --from=deps /app/node_modules ./node_modules
