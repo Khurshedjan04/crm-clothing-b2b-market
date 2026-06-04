@@ -246,13 +246,13 @@ VIEWS.dashboard = async () => {
       datasets:[{ label:'New Customers', data:growth.data.data, borderColor:INDIGO, backgroundColor:'rgba(99,102,241,.12)', fill:true, tension:.45, pointRadius:3 }]
     });
 
-    const src = sources.data.data;
+    const src = sources.data;
     makeChart('chart-sources','doughnut',{
       labels: src.map(d=>cap(d.source)),
       datasets:[{ data:src.map(d=>d.count), backgroundColor:[INDIGO,GREEN,AMBER,RED,CYAN,PURPLE], borderWidth:0 }]
     },{plugins:{legend:{position:'right'}}});
 
-    const pipeData = pipe.data.data;
+    const pipeData = pipe.data;
     makeChart('chart-pipeline','bar',{
       labels: pipeData.map(d=>cap(d.stage)),
       datasets:[{ label:'Opportunities', data:pipeData.map(d=>d.count), backgroundColor:pipeData.map(d=>STAGE_COLORS[d.stage]||INDIGO), borderRadius:4 }]
@@ -661,9 +661,9 @@ VIEWS.reports = async () => {
 
     const COLORS=['#6366f1','#10b981','#f59e0b','#ef4444','#06b6d4','#8b5cf6'];
     makeChart('r-growth','line',{labels:growth.data.labels,datasets:[{label:'New Customers',data:growth.data.data,borderColor:'#6366f1',backgroundColor:'rgba(99,102,241,.1)',fill:true,tension:.4}]});
-    const src=sources.data.data;
+    const src=sources.data;
     makeChart('r-sources','doughnut',{labels:src.map(d=>cap(d.source)),datasets:[{data:src.map(d=>d.count),backgroundColor:COLORS,borderWidth:0}]},{plugins:{legend:{position:'right'}}});
-    const pd=pipe.data.data;
+    const pd=pipe.data;
     makeChart('r-pipe','bar',{labels:pd.map(d=>cap(d.stage)),datasets:[{label:'Pipeline Value (£)',data:pd.map(d=>d.value),backgroundColor:COLORS,borderRadius:4}]},{plugins:{legend:{display:false}}});
     if(S.user.role==='manager'&&emp.data.length){
       makeChart('r-emp','bar',{labels:emp.data.map(d=>d.name.split(' ')[0]),datasets:[{label:'Revenue Won (£)',data:emp.data.map(d=>d.revenue),backgroundColor:'#10b981',borderRadius:4}]},{plugins:{legend:{display:false}}});
