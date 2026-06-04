@@ -1,299 +1,176 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ClothCo Dashboard</title>
+  <title>ClothCo CRM</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="/dashboard/css/dashboard.css" />
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
 </head>
 <body>
 
-  <div id="loading-overlay" class="loading-overlay">
-    <div class="loading-spinner"></div>
-  </div>
+<!-- Loading -->
+<div id="app-loading" class="app-loading">
+  <div class="loading-ring"></div>
+</div>
 
-  <div id="toast" class="toast"></div>
+<!-- Toast -->
+<div id="toast-container" class="toast-container"></div>
 
-  <!-- ══════════════════════════════════════════════════
-       PAGE: LOGIN
-       ══════════════════════════════════════════════════ -->
-  <div id="page-login" class="page active">
-    <div class="dash-login-wrap">
-      <div class="dash-login-card">
-        <div class="dash-login-brand">
-          <span class="dash-login-logo">ClothCo</span>
-          <span class="dash-login-sub">Operations Dashboard</span>
-        </div>
-        <form id="login-form">
-          <div class="form-group">
-            <label>Email</label>
-            <input type="email" id="login-email" placeholder="staff@clothco.com" required />
-          </div>
-          <div class="form-group">
-            <label>Password</label>
-            <input type="password" id="login-password" placeholder="••••••••" required />
-          </div>
-          <div id="login-error" class="form-error hidden"></div>
-          <button type="submit" class="btn btn-primary btn-full" id="login-btn">Sign In</button>
-        </form>
+<!-- ═══════════════════════ LOGIN ═══════════════════════ -->
+<div id="login-page" class="login-page hidden">
+  <div class="login-card">
+    <div class="login-logo">
+      <div class="logo-mark">C</div>
+      <div>
+        <div class="login-brand">ClothCo CRM</div>
+        <div class="login-tagline">Cloud Operations Platform</div>
       </div>
     </div>
+    <form id="login-form">
+      <div class="form-group">
+        <label class="form-label">Email address</label>
+        <input type="email" id="login-email" class="form-input" placeholder="you@clothco.com" required />
+      </div>
+      <div class="form-group">
+        <label class="form-label">Password</label>
+        <input type="password" id="login-password" class="form-input" placeholder="••••••••" required />
+      </div>
+      <div id="login-error" class="form-error hidden"></div>
+      <button type="submit" class="btn btn-primary w-full" id="login-btn">Sign in</button>
+    </form>
   </div>
+</div>
 
-  <!-- ══════════════════════════════════════════════════
-       DASHBOARD APP SHELL
-       ══════════════════════════════════════════════════ -->
-  <div id="app-shell" class="app-shell hidden">
+<!-- ═══════════════════════ APP SHELL ═══════════════════════ -->
+<div id="app-shell" class="app-shell hidden">
 
-    <!-- Sidebar -->
-    <aside class="sidebar" id="sidebar">
-      <div class="sidebar-brand">
-        <span class="sidebar-logo">ClothCo</span>
-        <span class="sidebar-env">INTERNAL OPS</span>
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo">
+        <div class="logo-mark-sm">C</div>
+        <span class="sidebar-brand">ClothCo CRM</span>
       </div>
-      <nav class="sidebar-nav">
-        <a href="#" class="nav-item active" data-section="overview">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
-          Overview
-        </a>
-        <a href="#" class="nav-item" data-section="inventory">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
-          Inventory
-        </a>
-        <a href="#" class="nav-item" data-section="orders">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
-          Orders
-        </a>
-        <a href="#" class="nav-item manager-only hidden" data-section="users">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
-          Users
-        </a>
-        <a href="#" class="nav-item manager-only hidden" data-section="metrics">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-          Infrastructure
-        </a>
-      </nav>
-      <div class="sidebar-footer">
-        <div class="user-pill" id="user-pill">
-          <span class="user-pill-avatar" id="user-avatar">?</span>
-          <div class="user-pill-info">
-            <span id="user-name-display">—</span>
-            <span class="user-role-badge" id="user-role-display">—</span>
-          </div>
+      <button class="sidebar-toggle" id="sidebar-toggle">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">Main</div>
+      <a href="#dashboard"    class="nav-item" data-view="dashboard">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+        <span>Dashboard</span>
+      </a>
+      <a href="#customers"    class="nav-item" data-view="customers">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+        <span>Customers</span>
+      </a>
+      <a href="#leads"        class="nav-item" data-view="leads">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        <span>Leads</span>
+      </a>
+      <a href="#opportunities" class="nav-item" data-view="opportunities">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        <span>Opportunities</span>
+      </a>
+      <a href="#activities"   class="nav-item" data-view="activities">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+        <span>Activities</span>
+      </a>
+      <a href="#inventory"    class="nav-item" data-view="inventory">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+        <span>Inventory</span>
+      </a>
+      <a href="#reports"      class="nav-item" data-view="reports">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+        <span>Reports</span>
+      </a>
+
+      <div class="nav-section-label manager-only hidden">Admin</div>
+      <a href="#users"     class="nav-item manager-only hidden" data-view="users">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M6 20v-2a4 4 0 018 0v2"/><path d="M18 14l2 2 4-4"/></svg>
+        <span>Users</span>
+      </a>
+      <a href="#audit"     class="nav-item manager-only hidden" data-view="audit">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+        <span>Audit Logs</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="user-card">
+        <div class="user-avatar" id="sidebar-avatar">A</div>
+        <div class="user-info">
+          <div class="user-name" id="sidebar-name">—</div>
+          <div class="user-role" id="sidebar-role">—</div>
         </div>
-        <button class="btn-logout" id="logout-btn">Sign out</button>
       </div>
-    </aside>
+      <button class="btn-icon btn-logout" id="logout-btn" title="Sign out">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+      </button>
+    </div>
+  </aside>
 
-    <!-- Main Content -->
-    <main class="main-content">
+  <!-- Main -->
+  <div class="main-wrapper">
+    <!-- Top Bar -->
+    <header class="topbar">
+      <div class="topbar-left">
+        <h1 class="page-title" id="page-title">Dashboard</h1>
+      </div>
+      <div class="topbar-right">
+        <div class="search-box">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input type="text" id="global-search" placeholder="Search…" />
+        </div>
+        <button class="btn-icon" id="theme-toggle" title="Toggle theme">
+          <svg class="icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+          <svg class="icon-moon hidden" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+        </button>
+        <div class="topbar-avatar" id="topbar-avatar">A</div>
+      </div>
+    </header>
 
-      <!-- ── SECTION: OVERVIEW ── -->
-      <section id="section-overview" class="section active">
-        <div class="section-header">
-          <h1 class="section-title">Overview</h1>
-          <span class="section-subtitle">Live operations summary</span>
-        </div>
-        <div class="summary-cards" id="summary-cards">
-          <div class="summary-card"><div class="summary-label">Today's Orders</div><div class="summary-val" id="stat-today-orders">—</div></div>
-          <div class="summary-card"><div class="summary-label">Pending Orders</div><div class="summary-val" id="stat-pending">—</div></div>
-          <div class="summary-card"><div class="summary-label">Low Stock Items</div><div class="summary-val warning" id="stat-low-stock">—</div></div>
-          <div class="summary-card"><div class="summary-label">Active Clients</div><div class="summary-val" id="stat-clients">—</div></div>
-        </div>
-        <div class="quick-actions">
-          <span class="section-label">Quick Actions</span>
-          <div class="qa-buttons">
-            <button class="btn btn-outline" data-section="inventory">+ Add Product</button>
-            <button class="btn btn-outline" data-section="orders">View Orders</button>
-            <button class="btn btn-outline manager-only hidden" data-section="users">Manage Users</button>
-            <button class="btn btn-outline manager-only hidden" data-section="metrics">Infrastructure</button>
-          </div>
-        </div>
-      </section>
-
-      <!-- ── SECTION: INVENTORY ── -->
-      <section id="section-inventory" class="section hidden">
-        <div class="section-header">
-          <h1 class="section-title">Inventory</h1>
-          <button class="btn btn-primary" id="add-product-btn">+ Add Product</button>
-        </div>
-        <div class="toolbar">
-          <input type="text" id="inv-search" class="toolbar-input" placeholder="Search name, SKU, category…" />
-        </div>
-        <div class="table-wrap">
-          <table class="data-table" id="inv-table">
-            <thead>
-              <tr>
-                <th>SKU</th><th>Name</th><th>Category</th>
-                <th>Stock</th><th>Location</th><th>Price</th><th>Actions</th>
-              </tr>
-            </thead>
-            <tbody id="inv-tbody"></tbody>
-          </table>
-        </div>
-      </section>
-
-      <!-- ── SECTION: ORDERS ── -->
-      <section id="section-orders" class="section hidden">
-        <div class="section-header">
-          <h1 class="section-title">Order Fulfilment</h1>
-        </div>
-        <div class="toolbar">
-          <select id="order-status-filter" class="toolbar-input" style="max-width:180px">
-            <option value="">All Statuses</option>
-            <option>Pending</option><option>Processing</option>
-            <option>Shipped</option><option>Delivered</option><option>Cancelled</option>
-          </select>
-          <input type="text" id="order-search" class="toolbar-input" placeholder="Invoice / client…" />
-        </div>
-        <div class="table-wrap">
-          <table class="data-table">
-            <thead>
-              <tr>
-                <th>Invoice</th><th>Client</th><th>Date</th>
-                <th>Total</th><th>Payment</th><th>Status</th><th>Actions</th>
-              </tr>
-            </thead>
-            <tbody id="orders-tbody"></tbody>
-          </table>
-        </div>
-      </section>
-
-      <!-- ── SECTION: USERS ── -->
-      <section id="section-users" class="section hidden manager-only">
-        <div class="section-header">
-          <h1 class="section-title">User Management</h1>
-          <button class="btn btn-primary" id="create-staff-btn">+ Create Staff</button>
-        </div>
-        <div class="tab-bar">
-          <button class="tab-btn active" data-tab="clients">Clients</button>
-          <button class="tab-btn" data-tab="staff">Staff</button>
-        </div>
-        <div class="table-wrap">
-          <table class="data-table">
-            <thead>
-              <tr><th>Name</th><th>Email</th><th>Company</th><th>Status</th><th>Created</th><th>Actions</th></tr>
-            </thead>
-            <tbody id="users-tbody"></tbody>
-          </table>
-        </div>
-      </section>
-
-      <!-- ── SECTION: METRICS ── -->
-      <section id="section-metrics" class="section hidden manager-only">
-        <div class="section-header">
-          <h1 class="section-title">Infrastructure Monitor</h1>
-          <div style="display:flex;gap:10px;align-items:center">
-            <span class="section-label" id="metrics-refresh-label">Auto-refresh: 10s</span>
-            <button class="btn btn-outline" id="simulate-btn">⚡ Simulate Load Spike</button>
-            <button class="btn btn-primary" id="refresh-metrics-btn">Refresh</button>
-          </div>
-        </div>
-
-        <!-- Server Status Cards -->
-        <div class="server-cards" id="server-cards">
-          <!-- injected -->
-        </div>
-
-        <!-- Charts -->
-        <div class="charts-grid">
-          <div class="chart-card">
-            <div class="chart-card-title">CPU & Memory Usage (%)</div>
-            <canvas id="chart-cpu-mem" height="200"></canvas>
-          </div>
-          <div class="chart-card">
-            <div class="chart-card-title">Requests / Second by Instance</div>
-            <canvas id="chart-rps" height="200"></canvas>
-          </div>
-        </div>
-      </section>
-
+    <!-- View Container -->
+    <main class="view-container" id="view-container">
+      <!-- Views rendered here by JS -->
     </main>
   </div>
+</div>
 
-  <!-- ─── MODALS ─────────────────────────────────────── -->
-
-  <!-- Product Form Modal -->
-  <div id="modal-product" class="modal hidden">
-    <div class="modal-backdrop"></div>
-    <div class="modal-box">
-      <button class="modal-close" data-modal="modal-product">✕</button>
-      <h3 class="modal-title" id="product-modal-title">Add Product</h3>
-      <form id="product-form">
-        <input type="hidden" id="product-id" />
-        <div class="form-row">
-          <div class="form-group"><label>Name *</label><input type="text" id="pf-name" required /></div>
-          <div class="form-group">
-            <label>Category *</label>
-            <select id="pf-category" required>
-              <option value="">Select…</option>
-              <option>Hoodies</option><option>Cargo Pants</option><option>Tees</option>
-              <option>Jackets</option><option>Shorts</option><option>Accessories</option>
-            </select>
-          </div>
-        </div>
-        <div class="form-row">
-          <div class="form-group"><label>SKU *</label><input type="text" id="pf-sku" required /></div>
-          <div class="form-group"><label>Base Price (£) *</label><input type="number" id="pf-price" step="0.01" min="0" required /></div>
-        </div>
-        <div class="form-row">
-          <div class="form-group"><label>Stock Level *</label><input type="number" id="pf-stock" min="0" required /></div>
-          <div class="form-group"><label>Warehouse Location</label><input type="text" id="pf-location" placeholder="Bin A-01, Warehouse 1" /></div>
-        </div>
-        <div class="form-group"><label>Description</label><textarea id="pf-desc" rows="2"></textarea></div>
-        <div class="form-group">
-          <label>Image URL</label>
-          <input type="text" id="pf-image" placeholder="https://…" />
-        </div>
-        <div id="product-form-error" class="form-error hidden"></div>
-        <button type="submit" class="btn btn-primary btn-full">Save Product</button>
-      </form>
+<!-- ═══════════════════════ MODAL ═══════════════════════ -->
+<div id="modal-overlay" class="modal-overlay hidden">
+  <div class="modal" id="modal">
+    <div class="modal-header">
+      <h3 class="modal-title" id="modal-title">Title</h3>
+      <button class="btn-icon modal-close" id="modal-close">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
     </div>
+    <div class="modal-body" id="modal-body"></div>
   </div>
+</div>
 
-  <!-- Order Detail Modal -->
-  <div id="modal-order" class="modal hidden">
-    <div class="modal-backdrop"></div>
-    <div class="modal-box modal-box-lg">
-      <button class="modal-close" data-modal="modal-order">✕</button>
-      <div id="order-detail-content"></div>
+<!-- Confirm Dialog -->
+<div id="confirm-overlay" class="modal-overlay hidden">
+  <div class="modal" style="max-width:400px">
+    <div class="modal-header">
+      <h3 class="modal-title" id="confirm-title">Confirm</h3>
     </div>
-  </div>
-
-  <!-- Create Staff Modal -->
-  <div id="modal-staff" class="modal hidden">
-    <div class="modal-backdrop"></div>
-    <div class="modal-box">
-      <button class="modal-close" data-modal="modal-staff">✕</button>
-      <h3 class="modal-title">Create Staff Account</h3>
-      <form id="staff-form">
-        <div class="form-group"><label>Full Name *</label><input type="text" id="sf-name" required /></div>
-        <div class="form-group"><label>Email *</label><input type="email" id="sf-email" required /></div>
-        <div class="form-group"><label>Password *</label><input type="password" id="sf-password" required /></div>
-        <div class="form-group"><label>Phone</label><input type="tel" id="sf-phone" /></div>
-        <div id="staff-form-error" class="form-error hidden"></div>
-        <button type="submit" class="btn btn-primary btn-full">Create Staff Account</button>
-      </form>
-    </div>
-  </div>
-
-  <!-- Confirm Deactivate Modal -->
-  <div id="modal-confirm" class="modal hidden">
-    <div class="modal-backdrop"></div>
-    <div class="modal-box" style="max-width:400px;text-align:center">
-      <h3 class="modal-title" id="confirm-title">Confirm Action</h3>
-      <p class="confirm-msg" id="confirm-msg-text"></p>
-      <div style="display:flex;gap:12px;justify-content:center;margin-top:24px">
-        <button class="btn btn-ghost" id="confirm-cancel-btn">Cancel</button>
-        <button class="btn btn-danger" id="confirm-ok-btn">Confirm</button>
+    <div class="modal-body">
+      <p id="confirm-msg" style="margin-bottom:20px;color:var(--text-secondary)"></p>
+      <div style="display:flex;gap:10px;justify-content:flex-end">
+        <button class="btn btn-ghost" id="confirm-cancel">Cancel</button>
+        <button class="btn btn-danger" id="confirm-ok">Delete</button>
       </div>
     </div>
   </div>
+</div>
 
-  <script src="/dashboard/js/dashboard.js"></script>
+<script src="/dashboard/js/app.js"></script>
 </body>
 </html>
