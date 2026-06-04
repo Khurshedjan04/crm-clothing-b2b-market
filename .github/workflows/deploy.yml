@@ -44,6 +44,10 @@ jobs:
           node --check backend/controllers/reportController.js
           node --check backend/controllers/auditController.js
 
+      - name: Syntax check frontend JS
+        run: |
+          node --check frontend/dashboard/js/app.js
+
   # ── Job 2: Build Docker image & push to ECR ─────────────
   build-and-push:
     name: Build & Push Docker Image

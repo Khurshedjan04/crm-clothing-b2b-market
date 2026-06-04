@@ -581,7 +581,7 @@ function openActModal(a,users){
 VIEWS.inventory = async () => {
   const vc=$('#view-container');
   let items=[];
-  try{{data:items}=await GET('/inventory');}catch{}
+  try{({data:items}=await GET('/inventory'));}catch{}
   const isManager=S.user.role==='manager';
 
   const render=(list)=>{
@@ -591,7 +591,7 @@ VIEWS.inventory = async () => {
       <td class="cell-mono">${i.sku}</td>
       <td class="cell-primary">${i.productName}</td>
       <td>${i.category||'—'}</td>
-      <td><span style="color:${low?'var(--danger)':'var(--success)';}">${i.quantity}</span>${low?` <span class="pill pill-lost" style="font-size:.65rem">Low</span>`:''}</td>
+      <td><span style="color:${low?'var(--danger)':'var(--success)'}">${i.quantity}</span>${low?` <span class="pill pill-lost" style="font-size:.65rem">Low</span>`:''}</td>
       <td>${fmtMoney(i.price)}</td>
       <td>${i.supplier||'—'}</td>
       <td class="table-actions">
@@ -678,7 +678,7 @@ VIEWS.users = async () => {
   const vc=$('#view-container');
   if(S.user.role!=='manager'){vc.innerHTML='<p class="text-muted">Access denied.</p>';return;}
   let users=[];
-  try{{data:users}=await GET('/users');}catch{}
+  try{({data:users}=await GET('/users'));}catch{}
 
   const render=(list)=>{
     const tbody=$('#usr-tbody');
@@ -741,7 +741,7 @@ VIEWS.audit = async () => {
   const vc=$('#view-container');
   if(S.user.role!=='manager'){vc.innerHTML='<p class="text-muted">Access denied.</p>';return;}
   let logs=[];
-  try{{data:logs}=await GET('/audit');}catch{}
+  try{({data:logs}=await GET('/audit'));}catch{}
 
   vc.innerHTML=`
   <div class="view-header"><div class="view-title">Audit Logs</div></div>
