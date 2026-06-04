@@ -30,10 +30,14 @@ app.get('/api/v1/health', (req, res) =>
   res.json({ success: true, data: { status: 'ok', uptime: process.uptime(), node: process.version, environment: process.env.NODE_ENV } })
 );
 
-// ── CRM Dashboard (single frontend, served at /) ─────────
-const frontendPath = path.join(__dirname, '..', 'frontend', 'dashboard');
-app.use(express.static(frontendPath));
-app.get('*', (req, res) => res.sendFile(path.join(frontendPath, 'index.html')));
+// ── CRM Dashboard (single frontend) ──────────────────────
+// Serve the frontend parent as static root so asset paths like
+// /dashboard/css/dashboard.css and /dashboard/js/app.js resolve correctly.
+const frontendRoot = path.join(__dirname, '..', 'frontend');
+app.use(express.static(frontendRoot));
+app.get('*', (req, res) =>
+  res.sendFile(path.join(frontendRoot, 'dashboard', 'index.html'))
+);
 
 app.use(errorHandler);
 
