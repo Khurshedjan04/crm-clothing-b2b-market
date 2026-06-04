@@ -35,10 +35,14 @@ jobs:
         run: |
           node --check backend/server.js
           node --check backend/controllers/authController.js
-          node --check backend/controllers/productController.js
-          node --check backend/controllers/orderController.js
           node --check backend/controllers/userController.js
-          node --check backend/controllers/metricController.js
+          node --check backend/controllers/customerController.js
+          node --check backend/controllers/leadController.js
+          node --check backend/controllers/opportunityController.js
+          node --check backend/controllers/activityController.js
+          node --check backend/controllers/inventoryController.js
+          node --check backend/controllers/reportController.js
+          node --check backend/controllers/auditController.js
 
   # ── Job 2: Build Docker image & push to ECR ─────────────
   build-and-push:
